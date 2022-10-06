@@ -4,18 +4,19 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
     
   let configLogin = {
-    clientId:'JTZkzQEbKNvRikXjd0QSBV3txqCQA26Bg6FPeVyYyFu4VeWl2E',
+    clientId:'PQ0hxPyzAS_cQfM-pi1Dbe9gDQBNQmtzDuLc10McipLQ8DqvFy',
     baseUrl:'https://api.passwordless.com.au/v1',
     onSuccess:onSuccessLogin,
     onError:onErrorLogin
   };
   let configRegister = {
-    clientId:'JTZkzQEbKNvRikXjd0QSBV3txqCQA26Bg6FPeVyYyFu4VeWl2E',
+    clientId:'PQ0hxPyzAS_cQfM-pi1Dbe9gDQBNQmtzDuLc10McipLQ8DqvFy',
     baseUrl:'https://api.passwordless.com.au/v1',
     onSuccess:onSuccessRegister,
     onError:onErrorRegister
@@ -23,6 +24,10 @@ const Home = () => {
   
   function onSuccessLogin(data) {
       console.log("LOGIN SUCCESS",data);
+      if(data) {
+        setOpenLogin(false);
+        navigate("/dashboard", { state: { 'type': "Login", 'userData': data } });
+      }
   }
   function onSuccessRegister(data) {
       console.log("REGISTER SUCCESS",data);
