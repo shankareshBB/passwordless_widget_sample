@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,17 +27,24 @@ const Home = () => {
       console.log("LOGIN SUCCESS",data);
       if(data) {
         setOpenLogin(false);
+        toast.success(`${data.email} successfully logged in!`);
         navigate("/dashboard", { state: { 'type': "Login", 'userData': data } });
       }
   }
   function onSuccessRegister(data) {
       console.log("REGISTER SUCCESS",data);
+      if (data.verified) {
+        handleCloseRegister();
+        toast.success(`${data.email} registered successfully !`);
+      }
   }
   function onErrorLogin(data) {
     console.log("LOGIN ERROR",data);
+    toast.error("Invalid user!");
   }
   function onErrorRegister(data) {
-     console.log("REGISTER ERROR",data);
+    console.log("REGISTER ERROR",data);
+    toast.error("User already exists!");
   }
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
@@ -77,54 +85,78 @@ const Home = () => {
     };
 
     return (
-      <Dialog onClose={handleClose} open={open} style={{ zIndex:0 }}>
+      <Dialog 
+        onClose={handleClose} 
+        open={open} 
+        sx={{ 
+          zIndex:0, 
+          paper: { 
+            borderRadius: 15
+          } 
+        }}
+      >
         <Register config={configRegister} />
       </Dialog>
     );
   }
 
   return (
-    <div>
-        <Box
+    <div 
+      style={{ 
+        display:'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        width: '100%',
+        height: '100%'
+      }}
+    >
+      <Box
         sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            '& > :not(style)': {
-                m: 1,
-                width: 400,
-                height: 200,
-            },
+          display: 'flex',
+          justifyContent: 'center',
+          '& > :not(style)': {
+            m: 1,
+            width: 400,
+            height: 200,
+          },
         }}
+      >
+        <Paper
+          elevation={4}
+          style={{ borderRadius: 20, border: "2px solid #3598dc" }}
         >
-            <Paper>
-                <h4>Home page of SampleWEB Application</h4>
+          <h4>Home page of the Application</h4>
+          <br />
+          <p>Play with passwordless login and register</p>
+          <Button
+            variant='contained'
+            style={{textTransform: 'none',marginRight:5 }}
+            onClick={handleClickOpenLogin}
+          >
+            Login
+          </Button>
 
-                <Button
-                    variant='contained'
-                    style={{textTransform: 'none',marginRight:5 }}
-                    onClick={handleClickOpenLogin}
-                >
-                    Login
-                </Button>
+          <Button
+            variant='contained'
+            style={{textTransform: 'none'}}
+            onClick={handleClickOpenRegister}
+          >
+            Register
+          </Button>
+        </Paper> 
+      </Box>
 
-                <Button
-                    variant='contained'
-                    style={{textTransform: 'none'}}
-                    onClick={handleClickOpenRegister}
-                >
-                    Register
-                </Button>
-            </Paper> 
-        </Box>
-        <SimpleDialogLogin
-            open={openLogin}
-            onClose={handleCloseLogin}
-        />
 
-        <SimpleDialogRegister
-            open={openRegister}
-            onClose={handleCloseRegister}
-        />
+      <SimpleDialogLogin
+        open={openLogin}
+        onClose={handleCloseLogin}
+      />
+
+      <SimpleDialogRegister
+        open={openRegister}
+        onClose={handleCloseRegister}
+      />
     </div>
   )
 }

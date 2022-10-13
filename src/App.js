@@ -2,6 +2,7 @@ import { Approve } from 'passwordless-bb-ui';
 import Home from './Home';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from './Dashboard';
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   let config = {
@@ -12,15 +13,18 @@ function App() {
   };
   
   function onSuccessApprove(data) {
-    console.log("SUCCESS APPROVE",data)
+    console.log("SUCCESS APPROVE",data);
+    toast.success('Successfully approved!');
   }
 
   function onErrorApprove(data) {
-    console.log("ERROR APPROVE",data)
+    console.log("ERROR APPROVE",data);
+    toast.error("User already exists!");
   }
 
   return (
     <div className="App">
+      <Toaster />
       <Router>
         <Routes>
           <Route path="/" element={<Home />} /> 
