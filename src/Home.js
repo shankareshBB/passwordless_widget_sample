@@ -7,18 +7,18 @@ import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
 
-const Home = () => {
+const Home = ({config}) => {
   const navigate = useNavigate();
     
   let configLogin = {
-    clientId:'PQ0hxPyzAS_cQfM-pi1Dbe9gDQBNQmtzDuLc10McipLQ8DqvFy',
-    baseUrl:'https://api.passwordless.com.au/v1',
+    clientId:config?.clientId,
+    baseUrl:config?.baseUrl,
     onSuccess:onSuccessLogin,
     onError:onErrorLogin
   };
   let configRegister = {
-    clientId:'PQ0hxPyzAS_cQfM-pi1Dbe9gDQBNQmtzDuLc10McipLQ8DqvFy',
-    baseUrl:'https://api.passwordless.com.au/v1',
+    clientId:config?.clientId,
+    baseUrl:config?.baseUrl,
     onSuccess:onSuccessRegister,
     onError:onErrorRegister
   };
@@ -40,11 +40,11 @@ const Home = () => {
   }
   function onErrorLogin(data) {
     console.log("LOGIN ERROR",data);
-    toast.error("Invalid user!");
+    toast.error(data?.message || data || "Invalid user!");
   }
   function onErrorRegister(data) {
     console.log("REGISTER ERROR",data);
-    toast.error("User already exists!");
+    toast.error(data?.message || data || "User already exists!");
   }
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
