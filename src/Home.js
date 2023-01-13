@@ -6,46 +6,11 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
 import toast from 'react-hot-toast';
+import { IconButton } from '@mui/material';
 
 const Home = ({config}) => {
   const navigate = useNavigate();
-    
-  let configLogin = {
-    clientId:config?.clientId,
-    baseUrl:config?.baseUrl,
-    onSuccess:onSuccessLogin,
-    onError:onErrorLogin
-  };
-  let configRegister = {
-    clientId:config?.clientId,
-    baseUrl:config?.baseUrl,
-    onSuccess:onSuccessRegister,
-    onError:onErrorRegister
-  };
   
-  function onSuccessLogin(data) {
-      console.log("LOGIN SUCCESS",data);
-      if(data) {
-        setOpenLogin(false);
-        toast.success(`${data.email} successfully logged in!`);
-        navigate("/dashboard", { state: { 'type': "Login", 'userData': data } });
-      }
-  }
-  function onSuccessRegister(data) {
-      console.log("REGISTER SUCCESS",data);
-      if (data.verified) {
-        handleCloseRegister();
-        toast.success(`${data.email} registered successfully !`);
-      }
-  }
-  function onErrorLogin(data) {
-    console.log("LOGIN ERROR",data);
-    toast.error(data?.message || data || "Invalid user!");
-  }
-  function onErrorRegister(data) {
-    console.log("REGISTER ERROR",data);
-    toast.error(data?.message || data || "User already exists!");
-  }
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
 
@@ -63,6 +28,43 @@ const Home = ({config}) => {
     setOpenRegister(false);
   };
 
+  function onSuccessLogin(data) {
+    console.log("LOGIN SUCCESS",data);
+    if(data) {
+      setOpenLogin(false);
+      toast.success(`${data.email} successfully logged in!`);
+      navigate("/dashboard", { state: { 'type': "Login", 'userData': data } });
+    }
+  }
+  function onSuccessRegister(data) {
+    console.log("REGISTER SUCCESS",data);
+    if (data.verified) {
+      handleCloseRegister();
+      toast.success(`${data.email} registered successfully !`);
+    }
+  }
+  function onErrorLogin(data) {
+    console.log("LOGIN ERROR",data);
+    toast.error(data?.message?.errorMessage || data?.message || data || "Invalid user!");
+  }
+  function onErrorRegister(data) {
+    console.log("REGISTER ERROR",data);
+    toast.error(data?.message?.errorMessage || data?.message || data || "User already exists!");
+  }
+
+  let configLogin = {
+    clientId:config?.clientId,
+    baseUrl:config?.baseUrl,
+    onSuccess:onSuccessLogin,
+    onError:onErrorLogin
+  };
+  let configRegister = {
+    clientId:config?.clientId,
+    baseUrl:config?.baseUrl,
+    onSuccess:onSuccessRegister,
+    onError:onErrorRegister
+  };
+
   function SimpleDialogLogin(props) {
     const { onClose, open } = props;
   
@@ -73,6 +75,19 @@ const Home = ({config}) => {
     return (
       <Dialog onClose={handleClose} open={open} style={{ zIndex:0 }}>
         <Login config={configLogin} />
+        <IconButton 
+          size="small"
+          variant='text'
+          aria-label="Close" 
+          onClick={handleClose}
+          sx={{ 
+            position: 'absolute',
+            top:'0px',
+            right:'0px'
+          }}
+        >
+          X
+        </IconButton>
       </Dialog>
     );
   }
@@ -96,6 +111,20 @@ const Home = ({config}) => {
         }}
       >
         <Register config={configRegister} />
+        
+        <IconButton 
+          size="small"
+          variant='text'
+          aria-label="Close" 
+          onClick={handleClose}
+          sx={{ 
+            position: 'absolute',
+            top:'0px',
+            right:'0px'
+          }}
+        >
+          X
+        </IconButton>
       </Dialog>
     );
   }
