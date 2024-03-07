@@ -27,7 +27,7 @@ function App() {
   }
 
   const [config, setConfig] = useState({
-    clientId:'s5eCyZakpQZK0vpmRXStYIxIpqzLy7eLjJuxyQPqslxHYXcFm0',
+    clientId:'DDQzfoX-C6kTzsPX7EW2hBgLlq10mH6Yg_tOr2Z_-pTN6PHL_H',
     baseUrl:'https://api.passwordless4u.com/v1',
     onSuccess:onSuccessApprove,
     onError:onErrorApprove,
