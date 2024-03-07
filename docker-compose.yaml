@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  v1:
+    build: ./
+    ports:
+      - 3102:3101    
+    container_name: passwordless_sample_app
+    command: sh -c "cd /app/app && node server.js"
+    restart: unless-stopped
+    tty: true
+
+
